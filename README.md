@@ -53,8 +53,7 @@ optional arguments:
     
     -c [COUNT], --count [COUNT]
     
-        number of recent activities to download
-        or 'all' for all
+        number of recent activities to download, limit is 1000
         default: 1
     
     -f [{gpx,tcx,original}], --format [{gpx,tcx,original}]
@@ -75,10 +74,6 @@ optional arguments:
 
 Examples
 --------
-`python gcexport.py --count all`
-
-downloads all of your data to a dated directory
-
 `python gcexport.py -d ~/MyActivities -c 3 -f original -u --username mygarminusername --password mygarminpassword`
 
 downloads your 3 most recent activities in the FIT file format (or whatever they were uploaded as) into the `~/MyActivities` directory (unless they already exist)
