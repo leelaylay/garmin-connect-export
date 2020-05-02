@@ -5,9 +5,9 @@
 File:               gcexport.py
 Original Author:    Kyle Krafka (https://github.com/kjkjava/)
 Date:               April 28, 2015
-Fork Author:        Johannes Heinrich (https://github.com/JohannesHeinrich/)
-Date:               June 8, 2018
-Description:        This script will export fitness data from Garmin Connect
+Fork Author:        Leelaylay (https://github.com/leelaylay/garmin-connect-export)
+Date:               May 2, 2020
+Description:        This script will export fitness data from Garmin.cn
                     See README.md for more detailed information
 """
 
@@ -71,7 +71,7 @@ def http_req(url, post=None, headers={}):
 	request = urllib2.Request(url)
 	# request.add_header('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/1337 Safari/537.36')  # Tell Garmin we're some supported browser.
 	request.add_header('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2816.0 Safari/537.36')  # Tell Garmin we're some supported browser.
-	request.add_header('origin', 'https://sso.garmin.com') #this new header is needed after recent changes made by Garmin
+	request.add_header('origin', 'https://sso.garmin.cn') #this new header is needed after recent changes made by Garmin
 	for header_key, header_value in headers.iteritems():
 		request.add_header(header_key, header_value)
 	if post:
@@ -198,14 +198,14 @@ limit_maximum = 1000
 
 max_tries = 3
 
-WEBHOST = "https://connect.garmin.com"
-#REDIRECT = "https://connect.garmin.com/post-auth/login"
-REDIRECT = "https://connect.garmin.com/modern/"
-#BASE_URL = "http://connect.garmin.com/en-US/signin"
-BASE_URL = "https://sso.garmin.com/sso/signin"
-#GAUTH = "http://connect.garmin.com/gauth/hostname"
-GAUTH = "https://connect.garmin.com/modern/auth/hostname"
-SSO = "https://sso.garmin.com/sso"
+WEBHOST = "https://connect.garmin.cn"
+#REDIRECT = "https://connect.garmin.cn/post-auth/login"
+REDIRECT = "https://connect.garmin.cn/modern/"
+#BASE_URL = "http://connect.garmin.cn/en-US/signin"
+BASE_URL = "https://sso.garmin.cn/sso/signin"
+#GAUTH = "http://connect.garmin.cn/gauth/hostname"
+GAUTH = "https://connect.garmin.cn/modern/auth/hostname"
+SSO = "https://sso.garmin.cn/sso"
 CSS = "https://static.garmincdn.com/com.garmin.connect/ui/css/gauth-custom-v1.2-min.css"
 
 data = {'service': REDIRECT,
@@ -232,16 +232,16 @@ data = {'service': REDIRECT,
 print urllib.urlencode(data)
 
 # URLs for various services.
-url_gc_login     = 'https://sso.garmin.com/sso/signin?' + urllib.urlencode(data)
-url_gc_post_auth = 'https://connect.garmin.com/modern/activities?'
-#url_gc_summary   = 'https://connect.garmin.com/proxy/activity-search-service-1.2/json/activities?start=0&limit=1'
-url_gc_summary   = 'https://connect.garmin.com/modern/proxy/activitylist-service/activities/search/activities?start=0&limit=1'
-url_gc_search    = 'https://connect.garmin.com/modern/proxy/activitylist-service/activities/search/activities?'
-url_gc_activity  = 'https://connect.garmin.com/modern/proxy/activity-service/activity/'
-url_gc_device    = 'https://connect.garmin.com/modern/proxy/device-service/deviceservice/app-info/'
-url_gc_gpx_activity = 'https://connect.garmin.com/modern/proxy/download-service/export/gpx/activity/'
-url_gc_tcx_activity = 'https://connect.garmin.com/modern/proxy/download-service/export/tcx/activity/'
-url_gc_original_activity = 'http://connect.garmin.com/modern/proxy/download-service/files/activity/'
+url_gc_login     = 'https://sso.garmin.cn/sso/signin?' + urllib.urlencode(data)
+url_gc_post_auth = 'https://connect.garmin.cn/modern/activities?'
+#url_gc_summary   = 'https://connect.garmin.cn/proxy/activity-search-service-1.2/json/activities?start=0&limit=1'
+url_gc_summary   = 'https://connect.garmin.cn/modern/proxy/activitylist-service/activities/search/activities?start=0&limit=1'
+url_gc_search    = 'https://connect.garmin.cn/modern/proxy/activitylist-service/activities/search/activities?'
+url_gc_activity  = 'https://connect.garmin.cn/modern/proxy/activity-service/activity/'
+url_gc_device    = 'https://connect.garmin.cn/modern/proxy/device-service/deviceservice/app-info/'
+url_gc_gpx_activity = 'https://connect.garmin.cn/modern/proxy/download-service/export/gpx/activity/'
+url_gc_tcx_activity = 'https://connect.garmin.cn/modern/proxy/download-service/export/tcx/activity/'
+url_gc_original_activity = 'http://connect.garmin.cn/modern/proxy/download-service/files/activity/'
 
 # Initially, we need to get a valid session cookie, so we pull the login page.
 print 'Request login page'
@@ -400,7 +400,7 @@ while total_downloaded < total_to_download:
 		print a['activityName']
 
 		# Retrieve also the detail data from the activity (the one displayed on
-		# the https://connect.garmin.com/modern/activity/xxx page), because some
+		# the https://connect.garmin.cn/modern/activity/xxx page), because some
 		# data are missing from 'a' (or are even different, e.g. for my activities
 		# 86497297 or 86516281)
 		activity_details = None
@@ -547,7 +547,7 @@ while total_downloaded < total_to_download:
 		csv_record += empty_record # no WeightedMeanAirTemperature in JSON
 		csv_record += empty_record if absentOrNull('minTemperature', a) else '"' + str(a['minTemperature']) + '",'
 		csv_record += empty_record if absentOrNull('maxTemperature', a) else '"' + str(a['maxTemperature']) + '",'
-		csv_record += '"https://connect.garmin.com/modern/activity/' + str(a['activityId']) + '",'
+		csv_record += '"https://connect.garmin.cn/modern/activity/' + str(a['activityId']) + '",'
 		csv_record += empty_record if not endTimeWithOffset else '"' + endTimeWithOffset.strftime(ALMOST_RFC_1123) + '",'
 		# csv_record += empty_record if not endTimeWithOffset else '"' + endTimeWithOffset.isoformat() + '",'
 		csv_record += empty_record if absentOrNull('beginTimestamp', a) else '"' + str(a['beginTimestamp']) + '",'
