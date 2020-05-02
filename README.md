@@ -1,7 +1,7 @@
 garmin-connect-export
 =====================
 
-Downloads gpx, tcx or original fit files from your Garmin Connect Account.
+Downloads gpx, tcx or original fit files from your Garmin Connect Account (Mainland of China) in [connect.garmin.cn](connect.garmin.cn).
 
 Description
 -----------
